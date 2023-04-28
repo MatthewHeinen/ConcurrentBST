@@ -92,16 +92,16 @@ public class LinkedBinarySearchTree<E extends Comparable<E>>implements BinarySea
         } else if (data.compareTo(element) < 0) { //If the compareTo is less than 0
             if (rightSubTree == null) { //If the right subtree is null
                 rightSubTree = new LinkedBinarySearchTree<>(); //Create a new right subtree
-                recursiveInsert(element, rightSubTree); //Using the helper method insert this element into the right subtree
+                recursiveHelper(element, rightSubTree); //Using the helper method insert this element into the right subtree
             } else{
-                recursiveInsert(element, rightSubTree); //If we already have elements in the tree, just insert it using the helper method
+                recursiveHelper(element, rightSubTree); //If we already have elements in the tree, just insert it using the helper method
             }
         } else {
             if (leftSubTree == null) { //If the left subtree is null
                 leftSubTree = new LinkedBinarySearchTree<>(); //Create a new left subtree
-                recursiveInsert(element, leftSubTree); //Using the helper method insert this element into the left subtree
+                recursiveHelper(element, leftSubTree); //Using the helper method insert this element into the left subtree
             } else {
-                recursiveInsert(element, leftSubTree); //If we already have elements in the tree, just insert it using the helper method
+                recursiveHelper(element, leftSubTree); //If we already have elements in the tree, just insert it using the helper method
             }
         }
         count++; //Increment the count every time
@@ -112,7 +112,7 @@ public class LinkedBinarySearchTree<E extends Comparable<E>>implements BinarySea
      * @param element is the information that is stored with each part of the tree
      * @param root Root of the left or right subtree
      */
-    private void recursiveInsert(E element, LinkedBinarySearchTree<E> root){
+    private void recursiveHelper(E element, LinkedBinarySearchTree<E> root){
         if (root.data == null) { //If root.data is null
             root.data = element; //root.data is now element
         }else if (root.data.compareTo(element) == 0){ //If the compareTo equals 0
@@ -123,12 +123,12 @@ public class LinkedBinarySearchTree<E extends Comparable<E>>implements BinarySea
                 if (root.rightSubTree == null) { //If the right subtree is null
                     root.rightSubTree = new LinkedBinarySearchTree<>(); //Create a new right subtree
                 }
-                recursiveInsert(element, root.rightSubTree); //Using the helper method insert this element into the right subtree
+                recursiveHelper(element, root.rightSubTree); //Using the helper method insert this element into the right subtree
             } else {
                 if (root.leftSubTree == null) { //If the left subtree is null
                     root.leftSubTree = new LinkedBinarySearchTree<>(); //Create a new left subtree
                 }
-                recursiveInsert(element, root.leftSubTree); //Using the helper method insert this element into the left subtree
+                recursiveHelper(element, root.leftSubTree); //Using the helper method insert this element into the left subtree
             }
         }
 
@@ -191,5 +191,6 @@ public class LinkedBinarySearchTree<E extends Comparable<E>>implements BinarySea
     public String toString() {
         return "Tree: \nPre:  " + toStringPreOrder() + "\nIn:   " + toStringInOrder() + "\nPost: " + toStringPostOrder();//Return this sentence to the user
     }
+
 
 }

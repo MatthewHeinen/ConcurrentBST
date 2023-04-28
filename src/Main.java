@@ -18,20 +18,10 @@ public class Main {
         intTree.insert(3);
         System.out.println("Size: " + intTree.size());
         System.out.println(intTree);
+        //intTree.remove(3);
+        System.out.println("Size: " + intTree.size());
+        System.out.println(intTree);
 
 
-        BinarySearchTree<Character> letterTree = new LinkedBinarySearchTree<Character>(); //Example 2 test
-        letterTree.insert('A');
-        letterTree.insert('C');
-        letterTree.insert('G');
-        letterTree.insert('B');
-        letterTree.insert('D');
-        letterTree.insert('G'); // inserting again, should replace
-        letterTree.insert('F');
-        letterTree.insert('E');
-        letterTree.insert('H');
-        letterTree.insert('I');
-        System.out.println("Size: " + letterTree.size());
-        System.out.println(letterTree);
     }
 }
