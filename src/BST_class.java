@@ -13,13 +13,27 @@ class BST_class {
     }
     // BST root node
     Node root;
+    int count = 0;
+    public int getCount() { //getter for count
+        return count;
+    }
+
+    public void setCount(int count) { //setter for count
+        this.count = count;
+    }
 
     // Constructor for BST =>initial empty tree
     BST_class(){
         root = null;
+        count = 0;
     }
+    public int size() {
+        return count; //Returns the count (size) of the tree
+    }
+
     //delete a node from BST
     void deleteKey(int key) {
+        count--;
         root = delete_Recursive(root, key);
     }
 
@@ -63,6 +77,7 @@ class BST_class {
 
     // insert a node in BST
     void insert(int key)  {
+        count++;
         root = insert_Recursive(root, key);
     }
 
@@ -116,8 +131,22 @@ class BST_class {
         return search_Recursive(root.right, key);
     }
 
-    public boolean invarianceChecker() {
+    public boolean invariantChecker() {
+        return validate(root, null, null);
+    }
 
+    public boolean validate(Node root, Integer low, Integer high){
+        if (root == null) {
+            return true;
+        }
+        if((low != null && root.key <= low) || (high != null && root.key >= high)) {
+            return false;
+        }
+        return validate(root.right, root.key, high) && validate(root.left, low, root.key);
+    }
+
+    public void falseBST(){
+        root.key = root.left;
     }
 
 
