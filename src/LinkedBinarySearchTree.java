@@ -4,7 +4,7 @@ package src;
  * This is the class for creating our linked binary search tree methods such as insert as well as all the toString functions that will be printed to the user
  * @param <E> is a generic. Will be either a string or int
  */
-public class LinkedBinarySearchTree<E extends Comparable<E>>implements BinarySearchTree<E> {
+public class LinkedBinarySearchTree<E extends Comparable<E>>implements BinarySearchTree<E>  {
     private E data; //Generic for inputting into tree. This is basically the candidates information
 
     public E getData() { //Getter for data
@@ -192,5 +192,52 @@ public class LinkedBinarySearchTree<E extends Comparable<E>>implements BinarySea
         return "Tree: \nPre:  " + toStringPreOrder() + "\nIn:   " + toStringInOrder() + "\nPost: " + toStringPostOrder();//Return this sentence to the user
     }
 
+    void deleteKey(E key) { root = deleteRec(root, key); }
+
+    /* A recursive function to
+      delete an existing key in BST
+     */
+    LinkedBinarySearchTree<E> deleteRec(LinkedBinarySearchTree<E> root, E key)
+    {
+        /* Base Case: If the tree is empty */
+        if (root == null)
+            return root;
+
+        /* Otherwise, recur down the tree */
+        if (key.compareTo(root.data) > 0)
+            root.leftSubTree= deleteRec(root.leftSubTree, key);
+        else if (key.compareTo(root.data) < 0)
+            root.rightSubTree = deleteRec(root.rightSubTree, key);
+
+            // if key is same as root's
+            // key, then This is the
+            // node to be deleted
+        else {
+            // node with only one child or no child
+            if (root.leftSubTree == null)
+                return root.rightSubTree;
+            else if (root.rightSubTree == null)
+                return root.leftSubTree;
+
+            // node with two children: Get the inorder
+            // successor (smallest in the right subtree)
+            root.data = minValue(root.rightSubTree.data);
+
+            // Delete the inorder successor
+            root.rightSubTree = deleteRec(root.rightSubTree, root.data);
+        }
+
+        return root;
+    }
+
+    E minValue(E root)
+    {
+        int minv = root.;
+        while (root.left != null) {
+            minv = root.left.key;
+            root = root.left;
+        }
+        return minv;
+    }
 
 }

@@ -22,6 +22,5 @@ public class Main {
         System.out.println("Size: " + intTree.size());
         System.out.println(intTree);
 
-
     }
 }
