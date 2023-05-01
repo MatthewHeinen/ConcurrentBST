@@ -6,6 +6,8 @@ package src;
  */
 public interface BinarySearchTree<E extends Comparable<E> > {
     void insert(E element); //Inserts an element in the tree, keeping it a BST
+    public E deleteRec(LinkedBinarySearchTree<E> root, E element);
+    public E deleteKey(E element);
     E getRootElement(); //Returns the element at the root of the tree
     int size(); //Returns the number of elements in the tree
     boolean isEmpty(); //Checks if tree is empty

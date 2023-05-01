@@ -192,50 +192,61 @@ public class LinkedBinarySearchTree<E extends Comparable<E>>implements BinarySea
         return "Tree: \nPre:  " + toStringPreOrder() + "\nIn:   " + toStringInOrder() + "\nPost: " + toStringPostOrder();//Return this sentence to the user
     }
 
-    void deleteKey(E key) { root = deleteRec(root, key); }
+    public E deleteKey(E element) {
+        return deleteRec(this, element);
+    }
 
     /* A recursive function to
       delete an existing key in BST
      */
-    LinkedBinarySearchTree<E> deleteRec(LinkedBinarySearchTree<E> root, E key)
+
+    /* A recursive function to
+      delete an existing key in BST
+     */
+    public E deleteRec(LinkedBinarySearchTree<E> root, E element)
     {
         /* Base Case: If the tree is empty */
-        if (root == null)
-            return root;
+        if (root == null) {
+            assert false;
+            return null;
+        }
 
         /* Otherwise, recur down the tree */
-        if (key.compareTo(root.data) > 0)
-            root.leftSubTree= deleteRec(root.leftSubTree, key);
-        else if (key.compareTo(root.data) < 0)
-            root.rightSubTree = deleteRec(root.rightSubTree, key);
+        if (element.compareTo(root.data) < 0)
+            deleteRec(root.leftSubTree, element);
+        else if (element.compareTo(root.data) > 0)
+            deleteRec(root.rightSubTree, element);
 
             // if key is same as root's
             // key, then This is the
             // node to be deleted
         else {
-            // node with only one child or no child
+            if (element.compareTo(root.data) == 0) {
+                root.data = (E) "here";
+            }
+//             node with only one child or no child
             if (root.leftSubTree == null)
-                return root.rightSubTree;
+                return root.rightSubTree.data;
             else if (root.rightSubTree == null)
-                return root.leftSubTree;
+                return root.leftSubTree.data;
 
             // node with two children: Get the inorder
-            // successor (smallest in the right subtree)
-            root.data = minValue(root.rightSubTree.data);
-
-            // Delete the inorder successor
-            root.rightSubTree = deleteRec(root.rightSubTree, root.data);
+//            // successor (smallest in the right subtree)
+//            root.data = minValue(root.rightSubTree);
+//
+//            // Delete the inorder successor
+//            root.rightSubTree.data = deleteRec(root.rightSubTree, root.data);
         }
 
-        return root;
+        return root.data;
     }
 
-    E minValue(E root)
+    E minValue(LinkedBinarySearchTree<E> root)
     {
-        int minv = root.;
-        while (root.left != null) {
-            minv = root.left.key;
-            root = root.left;
+        E minv = root.data;
+        while (root.leftSubTree != null) {
+            minv = root.leftSubTree.data;
+            root = root.leftSubTree;
         }
         return minv;
     }

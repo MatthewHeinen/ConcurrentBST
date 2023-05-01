@@ -18,7 +18,7 @@ public class Main {
         intTree.insert(3);
         System.out.println("Size: " + intTree.size());
         System.out.println(intTree);
-        //intTree.remove(3);
+        intTree.deleteKey(3);
         System.out.println("Size: " + intTree.size());
         System.out.println(intTree);
 
