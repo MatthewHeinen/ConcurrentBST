@@ -1,10 +1,12 @@
 package src;
+
+import java.util.concurrent.Semaphore;
+
 class BST_class extends Thread {
     //node class that defines BST node
     class Node {
         int key;
         Node left, right;
-
         public Node(int data){
             key = data;
             left = right = null;
@@ -20,11 +22,14 @@ class BST_class extends Thread {
     public void setCount(int count) { //setter for count
         this.count = count;
     }
+    private final Semaphore insertSem;
 
     // Constructor for BST =>initial empty tree
     BST_class(){
         root = null;
         count = 0;
+        insertSem = new Semaphore(1);
+
     }
     public int size() {
         return count; //Returns the count (size) of the tree
@@ -32,8 +37,8 @@ class BST_class extends Thread {
 
     //delete a node from BST
     synchronized void deleteKey(int key) {
-        count--;
         root = delete_Recursive(root, key);
+        count--;
     }
 
     //recursive delete function
@@ -75,23 +80,30 @@ class BST_class extends Thread {
     }
 
     // insert a node in BST
-    void insert(int key)  {
-        count++;
+    void insert(int key) throws InterruptedException {
         root = insert_Recursive(root, key);
+        count++;
     }
 
     //recursive insert function
-    Node insert_Recursive(Node root, int key) {
+    Node insert_Recursive(Node root, int key) throws InterruptedException {
         //tree is empty
+        insertSem.acquire();
         if (root == null) {
             root = new Node(key);
+            insertSem.release();
             return root;
         }
         //traverse the tree
-        if (key < root.key)     //insert in the left subtree
+        if (key < root.key) {     //insert in the left subtree
             root.left = insert_Recursive(root.left, key);
-        else if (key > root.key)    //insert in the right subtree
+            insertSem.release();
+        }
+        else if (key > root.key) {
+            //insert in the right subtree
             root.right = insert_Recursive(root.right, key);
+            insertSem.release();
+        }
         // return pointer
         return root;
     }

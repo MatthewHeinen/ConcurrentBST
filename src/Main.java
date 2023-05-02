@@ -1,7 +1,7 @@
 package src;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         /**
          * Single threaded test suite. Do I need more than 2 tests? These were just taken from my 106 lab
@@ -30,10 +30,90 @@ public class Main {
         bst.inorder();
         System.out.println("\n" + "This is a "+ bst.invariantChecker() + " BST");
         System.out.println("\n");
-        System.out.println("A false BST test: ");
+        System.out.println("A false BST test when the nodes are printed in order: ");
         bst.falseBST();
         bst.inorder();
         System.out.println("\n" + "This is a "+ bst.invariantChecker() + " BST");
         System.out.println("*****************************************************************************");
+
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread1.start();
+
+        Thread thread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread2.start();
+
+        Thread thread3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread3.start();
+
+        Thread thread4 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread4.start();
+
+        Thread thread5 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread5.start();
+
+        Thread thread6 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread6.start();
+
+        Thread thread7 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread7.start();
+
+        Thread thread8 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread8.start();
+
+        Thread thread9 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread9.start();
+
+        Thread thread10 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread10.start();
     }
 }
