@@ -1,6 +1,5 @@
 package src;
-
-class BST_class {
+class BST_class extends Thread {
     //node class that defines BST node
     class Node {
         int key;
@@ -32,13 +31,13 @@ class BST_class {
     }
 
     //delete a node from BST
-    void deleteKey(int key) {
+    synchronized void deleteKey(int key) {
         count--;
         root = delete_Recursive(root, key);
     }
 
     //recursive delete function
-    Node delete_Recursive(Node root, int key)  {
+    synchronized Node delete_Recursive(Node root, int key)  {
         //tree is empty
         if (root == null)  return root;
 
@@ -146,7 +145,7 @@ class BST_class {
     }
 
     public void falseBST(){
-        root.key = root.left;
+        root.key = 150000;
     }
 
 

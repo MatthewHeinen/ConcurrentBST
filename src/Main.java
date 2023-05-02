@@ -29,5 +29,11 @@ public class Main {
         System.out.println("In order printing of a tree with a remove/removes in it: ");
         bst.inorder();
         System.out.println("\n" + "This is a "+ bst.invariantChecker() + " BST");
+        System.out.println("\n");
+        System.out.println("A false BST test: ");
+        bst.falseBST();
+        bst.inorder();
+        System.out.println("\n" + "This is a "+ bst.invariantChecker() + " BST");
+        System.out.println("*****************************************************************************");
     }
 }
