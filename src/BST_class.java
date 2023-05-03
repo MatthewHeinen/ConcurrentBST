@@ -9,13 +9,6 @@ class BST_class extends Thread {
         Node left, right;
 
         private final Semaphore nodeSem;
-        public void acquireNodeSem() throws InterruptedException {
-            nodeSem.acquire();
-        }
-
-        public void releaseNodeSem(){
-            nodeSem.release();
-        }
 
         public Node(int data){
             key = data;
@@ -33,13 +26,13 @@ class BST_class extends Thread {
     public void setCount(int count) { //setter for count
         this.count = count;
     }
-    private final Semaphore insertSem;
+    //private final Semaphore insertSem;
 
     // Constructor for BST =>initial empty tree
     BST_class(){
         root = null;
         count = 0;
-        insertSem = new Semaphore(1);
+        //insertSem = new Semaphore(1);
 
     }
     public int size() {
@@ -94,30 +87,32 @@ class BST_class extends Thread {
     void insert(int key) throws InterruptedException {
         count++;
         root = insert_Recursive(root, key);
-        insertSem.release();
+        //root.nodeSem.release();
 
     }
 
     //recursive insert function
     Node insert_Recursive(Node root, int key) throws InterruptedException {
         //tree is empty
-        insertSem.acquire();
+
         if (root == null) {
             root = new Node(key);
-            insertSem.release();
+            //root.nodeSem.release();
             return root;
         }
+        root.nodeSem.acquire();
         //traverse the tree
         if (key < root.key) {     //insert in the left subtree
             root.left = insert_Recursive(root.left, key);
-            insertSem.release();
+            root.nodeSem.release();
         }
         else if (key > root.key) {
             //insert in the right subtree
             root.right = insert_Recursive(root.right, key);
-            insertSem.release();
+            root.nodeSem.release();
         }
         // return pointer
+//        root.nodeSem.release();
         return root;
     }
 

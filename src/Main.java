@@ -138,6 +138,8 @@ public class Main {
             public void run() {
                 try {
                     bstMulti.insert(12);
+                    bstMulti.insert(20);
+                    bstMulti.insert(25);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
