@@ -36,84 +36,180 @@ public class Main {
         System.out.println("\n" + "This is a "+ bst.invariantChecker() + " BST");
         System.out.println("*****************************************************************************");
 
-        Thread thread1 = new Thread(new Runnable() {
+        BST_class bstMulti = new BST_class(); //Example 1 test
+        Thread insert1 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(8);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread1.start();
+        insert1.start();
 
-        Thread thread2 = new Thread(new Runnable() {
+        Thread insert2 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(2);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread2.start();
+        insert2.start();
 
-        Thread thread3 = new Thread(new Runnable() {
+        Thread insert3 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(6);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread3.start();
+        insert3.start();
 
-        Thread thread4 = new Thread(new Runnable() {
+        Thread insert4 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(4);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread4.start();
+        insert4.start();
 
-        Thread thread5 = new Thread(new Runnable() {
+        Thread insert5 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(3);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread5.start();
+        insert5.start();
 
-        Thread thread6 = new Thread(new Runnable() {
+        Thread insert6 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread6.start();
+        insert6.start();
 
-        Thread thread7 = new Thread(new Runnable() {
+        Thread insert7 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(10);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread7.start();
+        insert7.start();
 
-        Thread thread8 = new Thread(new Runnable() {
+        Thread insert8 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(15);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread8.start();
+        insert8.start();
 
-        Thread thread9 = new Thread(new Runnable() {
+        Thread insert9 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(12);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread9.start();
+        insert9.start();
 
-        Thread thread10 = new Thread(new Runnable() {
+        Thread insert10 = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                try {
+                    bstMulti.insert(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        thread10.start();
+        insert10.start();
+
+        Thread insert11 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bstMulti.insert(60);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        insert11.start();
+
+        System.out.println("In order printing of a tree with no removes in it: ");
+        System.out.println("Size: " + bstMulti.size());
+        bstMulti.inorder();
+        System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
+
+        Thread remove1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                bstMulti.deleteKey(4);
+            }
+        });
+        remove1.start();
+
+        Thread remove2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                bstMulti.deleteKey(15);
+            }
+        });
+        remove2.start();
+
+        Thread remove3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                bstMulti.deleteKey(100);
+            }
+        });
+        remove3.start();
+
+        Thread remove4 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                bstMulti.deleteKey(3);
+            }
+        });
+        remove4.start();
+
+        System.out.println("\n");
+        System.out.println("In order printing of a tree with removes in it: ");
+        System.out.println("Size: " + bstMulti.size());
+        bstMulti.inorder();
+        System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
     }
 }

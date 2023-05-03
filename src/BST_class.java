@@ -7,9 +7,20 @@ class BST_class extends Thread {
     class Node {
         int key;
         Node left, right;
+
+        private final Semaphore nodeSem;
+        public void acquireNodeSem() throws InterruptedException {
+            nodeSem.acquire();
+        }
+
+        public void releaseNodeSem(){
+            nodeSem.release();
+        }
+
         public Node(int data){
             key = data;
             left = right = null;
+            nodeSem = new Semaphore(1);
         }
     }
     // BST root node
@@ -37,8 +48,8 @@ class BST_class extends Thread {
 
     //delete a node from BST
     synchronized void deleteKey(int key) {
-        root = delete_Recursive(root, key);
         count--;
+        root = delete_Recursive(root, key);
     }
 
     //recursive delete function
@@ -81,8 +92,10 @@ class BST_class extends Thread {
 
     // insert a node in BST
     void insert(int key) throws InterruptedException {
-        root = insert_Recursive(root, key);
         count++;
+        root = insert_Recursive(root, key);
+        insertSem.release();
+
     }
 
     //recursive insert function
