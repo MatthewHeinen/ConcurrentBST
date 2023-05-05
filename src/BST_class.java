@@ -85,8 +85,8 @@ class BST_class extends Thread {
 
     // insert a node in BST
     void insert(int key) throws InterruptedException {
-        count++;
         root = insert_Recursive(root, key);
+        count++;
         //root.nodeSem.release();
 
     }
@@ -94,6 +94,7 @@ class BST_class extends Thread {
     //recursive insert function
     Node insert_Recursive(Node root, int key) throws InterruptedException {
         //tree is empty
+        //add case where if the node has a parent, release the parent semaphore
 
         if (root == null) {
             root = new Node(key);
@@ -101,6 +102,11 @@ class BST_class extends Thread {
             return root;
         }
         root.nodeSem.acquire();
+
+//        while (root.left != null){
+//            root.nodeSem.release();
+//            root = root.left;
+//        }
         //traverse the tree
         if (key < root.key) {     //insert in the left subtree
             root.left = insert_Recursive(root.left, key);
@@ -112,7 +118,7 @@ class BST_class extends Thread {
             root.nodeSem.release();
         }
         // return pointer
-//        root.nodeSem.release();
+        //root.nodeSem.release();
         return root;
     }
 

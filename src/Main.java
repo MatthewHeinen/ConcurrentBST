@@ -140,6 +140,7 @@ public class Main {
                     bstMulti.insert(12);
                     bstMulti.insert(20);
                     bstMulti.insert(25);
+                    System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -175,43 +176,43 @@ public class Main {
         System.out.println("Size: " + bstMulti.size());
         bstMulti.inorder();
         System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
-
-        Thread remove1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                bstMulti.deleteKey(4);
-            }
-        });
-        remove1.start();
-
-        Thread remove2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                bstMulti.deleteKey(15);
-            }
-        });
-        remove2.start();
-
-        Thread remove3 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                bstMulti.deleteKey(100);
-            }
-        });
-        remove3.start();
-
-        Thread remove4 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                bstMulti.deleteKey(3);
-            }
-        });
-        remove4.start();
-
-        System.out.println("\n");
-        System.out.println("In order printing of a tree with removes in it: ");
-        System.out.println("Size: " + bstMulti.size());
-        bstMulti.inorder();
-        System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
+//
+//        Thread remove1 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                bstMulti.deleteKey(4);
+//            }
+//        });
+//        remove1.start();
+//
+//        Thread remove2 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                bstMulti.deleteKey(15);
+//            }
+//        });
+//        remove2.start();
+//
+//        Thread remove3 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                bstMulti.deleteKey(100);
+//            }
+//        });
+//        remove3.start();
+//
+//        Thread remove4 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                bstMulti.deleteKey(3);
+//            }
+//        });
+//        remove4.start();
+//
+//        System.out.println("\n");
+//        System.out.println("In order printing of a tree with removes in it: ");
+//        System.out.println("Size: " + bstMulti.size());
+//        bstMulti.inorder();
+//        System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
     }
 }
