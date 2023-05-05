@@ -85,10 +85,14 @@ class BST_class extends Thread {
 
     // insert a node in BST
     void insert(int key) throws InterruptedException {
+        if (root == null) {
+            root = new Node(key);
+            count++;
+            return; //am i allowed to have empty returns
+        }
+
         insert_Recursive(root, key);
         count++;
-        //root.nodeSem.release();
-
     }
 
     //recursive insert function
@@ -96,17 +100,10 @@ class BST_class extends Thread {
         //tree is empty
         //add case where if the node has a parent, release the parent semaphore
 
-//        if (curr == null) {
-//            curr = new Node(key);
-//            //curr.nodeSem.release();
-//            return curr;
-//        }
+        if (curr == null) {
+            return;
+        }
 
-
-//        while (curr.left != null){
-//            curr.nodeSem.release();
-//            curr = curr.left;
-//        }
         //traverse the tree
         if (key < curr.key) {
             if(curr.left == null){
@@ -123,8 +120,8 @@ class BST_class extends Thread {
             }
         }
         // return pointer
-        //curr.nodeSem.release();
     }
+
 
     // method for inorder traversal of BST
     void inorder() {
