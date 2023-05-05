@@ -85,41 +85,45 @@ class BST_class extends Thread {
 
     // insert a node in BST
     void insert(int key) throws InterruptedException {
-        root = insert_Recursive(root, key);
+        insert_Recursive(root, key);
         count++;
         //root.nodeSem.release();
 
     }
 
     //recursive insert function
-    Node insert_Recursive(Node root, int key) throws InterruptedException {
+    void insert_Recursive(Node curr, int key) throws InterruptedException {
         //tree is empty
         //add case where if the node has a parent, release the parent semaphore
 
-        if (root == null) {
-            root = new Node(key);
-            //root.nodeSem.release();
-            return root;
-        }
-        root.nodeSem.acquire();
+//        if (curr == null) {
+//            curr = new Node(key);
+//            //curr.nodeSem.release();
+//            return curr;
+//        }
 
-//        while (root.left != null){
-//            root.nodeSem.release();
-//            root = root.left;
+
+//        while (curr.left != null){
+//            curr.nodeSem.release();
+//            curr = curr.left;
 //        }
         //traverse the tree
-        if (key < root.key) {     //insert in the left subtree
-            root.left = insert_Recursive(root.left, key);
-            root.nodeSem.release();
+        if (key < curr.key) {
+            if(curr.left == null){
+                curr.left = new Node(key);
+            } else {
+                insert_Recursive(curr.left, key);
+            }
         }
-        else if (key > root.key) {
-            //insert in the right subtree
-            root.right = insert_Recursive(root.right, key);
-            root.nodeSem.release();
+        else if (key > curr.key) {
+            if(curr.right == null) {
+                curr.right = new Node(key);
+            } else {
+                insert_Recursive(curr.right, key);
+            }
         }
         // return pointer
-        //root.nodeSem.release();
-        return root;
+        //curr.nodeSem.release();
     }
 
     // method for inorder traversal of BST
