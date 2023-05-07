@@ -1,6 +1,7 @@
 package src;
 
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
 class BST_class extends Thread {
     //node class that defines BST node
@@ -18,30 +19,24 @@ class BST_class extends Thread {
     }
     // BST root node
     Node root;
-    int count = 0;
-    public int getCount() { //getter for count
-        return count;
-    }
+    AtomicInteger count = new AtomicInteger(0);
 
-    public void setCount(int count) { //setter for count
-        this.count = count;
-    }
     //private final Semaphore insertSem;
 
     // Constructor for BST =>initial empty tree
     BST_class(){
         root = null;
-        count = 0;
+        count = new AtomicInteger(0);
         //insertSem = new Semaphore(1);
 
     }
     public int size() {
-        return count; //Returns the count (size) of the tree
+        return count.get(); //Returns the count (size) of the tree
     }
 
     //delete a node from BST
     synchronized void deleteKey(int key) {
-        count--;
+        count.decrementAndGet();
         root = delete_Recursive(root, key);
     }
 
@@ -87,12 +82,12 @@ class BST_class extends Thread {
     void insert(int key) throws InterruptedException {
         if (root == null) {
             root = new Node(key);
-            count++;
+            count.incrementAndGet();
             return; //am i allowed to have empty returns
         }
-
+        count.incrementAndGet();
         insert_Recursive(root, key);
-        count++;
+
     }
 
     //recursive insert function
@@ -104,31 +99,37 @@ class BST_class extends Thread {
             return;
         }
 
-        root.nodeSem.acquire();
+        curr.nodeSem.acquire();
         //traverse the tree
         if (key < curr.key) {
             if(curr.left == null){
-                curr.left = new Node(key);
-                curr.left.nodeSem.acquire();
-                root.nodeSem.release();
-                root = curr.left;
+                Node newNode = new Node(key);
+                newNode.nodeSem.acquire();
+                curr.left = newNode;
+                curr.nodeSem.release();
+                curr.left.nodeSem.release();
+//                root.left = curr.left;
             } else {
+                curr.nodeSem.release();
                 insert_Recursive(curr.left, key);
-                root.nodeSem.release();
+
             }
         }
         else if (key > curr.key) {
             if(curr.right == null) {
-                curr.right = new Node(key);
-                curr.right.nodeSem.acquire();
-                root.nodeSem.release();
-                root = curr.right;
+                Node newNode = new Node(key);
+                newNode.nodeSem.acquire();
+                curr.right = newNode;
+                curr.nodeSem.release();
+                curr.right.nodeSem.release();
+//                root.right = curr.right;
             } else {
+                curr.nodeSem.release();
                 insert_Recursive(curr.right, key);
-                root.nodeSem.release();
+
             }
         }
-        root.nodeSem.release();
+//        curr.nodeSem.release();
         // return pointer
     }
 
