@@ -1,6 +1,9 @@
 package src;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class BST_class extends Thread {
@@ -28,20 +31,37 @@ class BST_class extends Thread {
         root = null;
         count = new AtomicInteger(0);
         //insertSem = new Semaphore(1);
-
     }
+
+    private final Object waitingRemove = new Object();
+    private final Object waitingInsert = new Object();
+    private final Object waitingChecker = new Object();
+
+    private int insertCounter = 0;
+    private int matchCountInsert = 0;
+    private int removeCounter = 0;
+    private int matchCountRemove = 0;
+    private int checkerCounter = 0;
+    private int matchCheckerCounter = 0;
+    private final AtomicBoolean isInserting = new AtomicBoolean(false);
     public int size() {
         return count.get(); //Returns the count (size) of the tree
     }
 
     //delete a node from BST
-    synchronized void deleteKey(int key) {
+    public void deleteKey(int key) throws InterruptedException {
+        synchronized (waitingRemove) {
+            removeCounter++;
+            waitingRemove.wait();
+        }
         count.decrementAndGet();
         root = delete_Recursive(root, key);
+        matchCountRemove++;
+
     }
 
     //recursive delete function
-    synchronized Node delete_Recursive(Node root, int key)  {
+    private Node delete_Recursive(Node root, int key)  {
         //tree is empty
         if (root == null)  return root;
 
@@ -80,6 +100,10 @@ class BST_class extends Thread {
 
     // insert a node in BST
     void insert(int key) throws InterruptedException {
+        synchronized (waitingInsert) {
+            insertCounter++;
+            waitingInsert.wait();
+        }
         if (root == null) {
             root = new Node(key);
             count.incrementAndGet();
@@ -87,6 +111,7 @@ class BST_class extends Thread {
         }
         count.incrementAndGet();
         insert_Recursive(root, key);
+        matchCountInsert++;
 
     }
 
@@ -168,7 +193,12 @@ class BST_class extends Thread {
         return search_Recursive(root.right, key);
     }
 
-    public boolean invariantChecker() {
+    public boolean invariantChecker() throws InterruptedException {
+        synchronized (waitingChecker){
+            checkerCounter++;
+            waitingChecker.wait();
+        }
+        matchCheckerCounter++;
         return validate(root, null, null);
     }
 
@@ -185,6 +215,53 @@ class BST_class extends Thread {
     public void falseBST(){
         root.key = 150000;
     }
+
+    private void changeInsert() throws InterruptedException {
+        isInserting.set(!isInserting.get());
+
+        if (isInserting.get()) {
+            synchronized (waitingInsert) {
+                waitingInsert.notifyAll();
+            }
+            while (insertCounter != matchCountInsert) {
+                Thread.sleep(400);
+                System.out.println("Waiting for all of the inserts to finish");
+            }
+        } else {
+            synchronized (waitingRemove) {
+                waitingRemove.notifyAll();
+            }
+            while (removeCounter != matchCountRemove) {
+                Thread.sleep(400);
+                System.out.println("Waiting for all of the removes to finish");
+            }
+        }
+
+        synchronized (waitingChecker) {
+            waitingChecker.notifyAll();
+        }
+        while (checkerCounter != matchCheckerCounter) {
+            Thread.sleep(400);
+            System.out.println("Waiting for invariant checker to finish checking");
+        }
+    }
+
+    public void timing() {
+        Timer timer = new Timer(); // timer
+        TimerTask task = new TimerTask() { // creating a timer task
+            @Override
+            public void run() {
+                try {
+                    changeInsert(); // a method we are calling on
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        timer.schedule(task, 30, 1); // the schedule to call the method
+    }
+
+
 
 
 }

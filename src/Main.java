@@ -9,6 +9,7 @@ public class Main {
          */
         System.out.println("This is a starter project, nothing important in it.");
         BST_class bst = new BST_class(); //Example 1 test
+        bst.timing();
         bst.insert(8);
         bst.insert(11);
         bst.insert(5);
@@ -37,6 +38,7 @@ public class Main {
         System.out.println("*****************************************************************************");
 
         BST_class bstMulti = new BST_class(); //Example 1 test
+        bstMulti.timing();
         Thread insert1 = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -180,7 +182,11 @@ public class Main {
         Thread remove1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                bstMulti.deleteKey(4);
+                try {
+                    bstMulti.deleteKey(4);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         remove1.start();
@@ -188,7 +194,11 @@ public class Main {
         Thread remove2 = new Thread(new Runnable() {
             @Override
             public void run() {
-                bstMulti.deleteKey(15);
+                try {
+                    bstMulti.deleteKey(15);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         remove2.start();
@@ -196,7 +206,11 @@ public class Main {
         Thread remove3 = new Thread(new Runnable() {
             @Override
             public void run() {
-                bstMulti.deleteKey(100);
+                try {
+                    bstMulti.deleteKey(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         remove3.start();
@@ -204,10 +218,15 @@ public class Main {
         Thread remove4 = new Thread(new Runnable() {
             @Override
             public void run() {
-                bstMulti.deleteKey(3);
+                try {
+                    bstMulti.deleteKey(3);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         remove4.start();
+
 
         System.out.println("\n");
         System.out.println("In order printing of a tree with removes in it: ");
