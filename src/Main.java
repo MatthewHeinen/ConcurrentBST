@@ -172,10 +172,10 @@ public class Main {
         });
         insert11.start();
 
-        System.out.println("In order printing of a tree with no removes in it: ");
-        System.out.println("Size: " + bstMulti.size());
-        bstMulti.inorder();
-        System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
+//        System.out.println("In order printing of a tree with no removes in it: ");
+//        System.out.println("Size: " + bstMulti.size());
+//        bstMulti.inorder();
+//        System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
 
         Thread remove1 = new Thread(new Runnable() {
             @Override
@@ -211,7 +211,7 @@ public class Main {
 
         System.out.println("\n");
         System.out.println("In order printing of a tree with removes in it: ");
-        System.out.println("Size: " + bstMulti.size());
+        //System.out.println("Size: " + bstMulti.size());
         bstMulti.inorder();
         System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
     }
