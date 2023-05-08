@@ -43,7 +43,7 @@ class BST_class extends Thread {
     private int matchCountRemove = 0;
     private int checkerCounter = 0;
     private int matchCheckerCounter = 0;
-    private final AtomicBoolean isInserting = new AtomicBoolean(false);
+    private boolean isInserting = false;
     public int size() {
         return count.get(); //Returns the count (size) of the tree
     }
@@ -97,7 +97,6 @@ class BST_class extends Thread {
         }
         return minval;
     }
-
     // insert a node in BST
     void insert(int key) throws InterruptedException {
         synchronized (waitingInsert) {
@@ -107,11 +106,14 @@ class BST_class extends Thread {
         if (root == null) {
             root = new Node(key);
             count.incrementAndGet();
+            synchronized (waitingInsert) {
+                matchCountInsert++;
+            }
             return; //am i allowed to have empty returns
         }
         count.incrementAndGet();
         insert_Recursive(root, key);
-        matchCountInsert++;
+
 
     }
 
@@ -121,6 +123,9 @@ class BST_class extends Thread {
         //add case where if the node has a parent, release the parent semaphore
 
         if (curr == null) {
+            synchronized (waitingInsert) {
+                matchCountInsert++;
+            }
             return;
         }
 
@@ -133,6 +138,9 @@ class BST_class extends Thread {
                 curr.left = newNode;
                 curr.nodeSem.release();
                 curr.left.nodeSem.release();
+                synchronized (waitingInsert) {
+                    matchCountInsert++;
+                }
 //                root.left = curr.left;
             } else {
                 curr.nodeSem.release();
@@ -147,6 +155,9 @@ class BST_class extends Thread {
                 curr.right = newNode;
                 curr.nodeSem.release();
                 curr.right.nodeSem.release();
+                synchronized (waitingInsert) {
+                    matchCountInsert++;
+                }
 //                root.right = curr.right;
             } else {
                 curr.nodeSem.release();
@@ -198,15 +209,20 @@ class BST_class extends Thread {
             checkerCounter++;
             waitingChecker.wait();
         }
-        matchCheckerCounter++;
         return validate(root, null, null);
     }
 
     public boolean validate(Node root, Integer low, Integer high){
         if (root == null) {
+            synchronized (waitingChecker) {
+                matchCheckerCounter++;
+            }
             return true;
         }
         if((low != null && root.key <= low) || (high != null && root.key >= high)) {
+            synchronized (waitingChecker) {
+                matchCheckerCounter++;
+            }
             return false;
         }
         return validate(root.right, root.key, high) && validate(root.left, low, root.key);
@@ -217,21 +233,23 @@ class BST_class extends Thread {
     }
 
     private void changeInsert() throws InterruptedException {
-        isInserting.set(!isInserting.get());
+        isInserting = !isInserting;
 
-        if (isInserting.get()) {
+        if (isInserting) {
             synchronized (waitingInsert) {
                 waitingInsert.notifyAll();
             }
-            while (insertCounter != matchCountInsert) {
+            int goingIn = insertCounter;
+            while (goingIn != matchCountInsert) {
                 Thread.sleep(400);
-                System.out.println("Waiting for all of the inserts to finish");
+                System.out.println(goingIn + " == " + matchCountInsert);
             }
         } else {
             synchronized (waitingRemove) {
                 waitingRemove.notifyAll();
             }
-            while (removeCounter != matchCountRemove) {
+            int goingInRemove = removeCounter;
+            while (goingInRemove != matchCountRemove) {
                 Thread.sleep(400);
                 System.out.println("Waiting for all of the removes to finish");
             }
@@ -240,19 +258,20 @@ class BST_class extends Thread {
         synchronized (waitingChecker) {
             waitingChecker.notifyAll();
         }
-        while (checkerCounter != matchCheckerCounter) {
+        int goingInInvar = checkerCounter;
+        while (goingInInvar != matchCheckerCounter) {
             Thread.sleep(400);
             System.out.println("Waiting for invariant checker to finish checking");
         }
     }
 
     public void timing() {
-        Timer timer = new Timer(); // timer
-        TimerTask task = new TimerTask() { // creating a timer task
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    changeInsert(); // a method we are calling on
+                    changeInsert();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
