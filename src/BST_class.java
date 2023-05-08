@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class BST_class extends Thread {
+    final static int debug_keys_above = 0; /// set bigger than any test key, to turn off
     //node class that defines BST node
     class Node {
         int key;
@@ -99,6 +100,7 @@ class BST_class extends Thread {
     }
     // insert a node in BST
     void insert(int key) throws InterruptedException {
+        if (key > debug_keys_above) System.out.println("Debug: inserting key " + key);
         synchronized (waitingInsert) {
             insertCounter++;
             waitingInsert.wait();
@@ -112,9 +114,9 @@ class BST_class extends Thread {
             return; //am i allowed to have empty returns
         }
         count.incrementAndGet();
+
+        if (key > debug_keys_above) System.out.println("Debug: recursive inserting key from root " + key);
         insert_Recursive(root, key);
-
-
     }
 
     //recursive insert function
@@ -125,11 +127,14 @@ class BST_class extends Thread {
         if (curr == null) {
             synchronized (waitingInsert) {
                 matchCountInsert++;
+                System.out.println("Shouldn't get here");
             }
             return;
         }
 
         curr.nodeSem.acquire();
+
+        if (key > debug_keys_above) System.out.println("Debug: recursive inserting, locking " + curr.key + " as I work on key " + key);
         //traverse the tree
         if (key < curr.key) {
             if(curr.left == null){
@@ -144,6 +149,7 @@ class BST_class extends Thread {
 //                root.left = curr.left;
             } else {
                 curr.nodeSem.release();
+                if (key > debug_keys_above) System.out.println("Debug: recursive inserting, going left  after unlocking " + curr.key + " as I work on key " + key);
                 insert_Recursive(curr.left, key);
 
             }
@@ -161,9 +167,13 @@ class BST_class extends Thread {
 //                root.right = curr.right;
             } else {
                 curr.nodeSem.release();
+                if (key > debug_keys_above) System.out.println("Debug: recursive inserting, going right after unlocking " + curr.key + " as I work on key " + key);
                 insert_Recursive(curr.right, key);
 
             }
+        }
+        else if (key == curr.key){
+            curr.nodeSem.release();
         }
 //        curr.nodeSem.release();
         // return pointer

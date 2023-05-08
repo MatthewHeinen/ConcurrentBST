@@ -35,7 +35,7 @@ public class Main {
 //        bst.falseBST();
 //        bst.inorder();
 //        System.out.println("\n" + "This is a "+ bst.invariantChecker() + " BST");
-        System.out.println("*****************************************************************************");
+//        System.out.println("*****************************************************************************");
 
         BST_class bstMulti = new BST_class(); //Example 1 test
         bstMulti.timing();
@@ -131,6 +131,7 @@ public class Main {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                System.out.println("Bye from Thread 8");
             }
         });
         insert8.start();
@@ -146,6 +147,7 @@ public class Main {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                System.out.println("Bye from Thread 9");
             }
         });
         insert9.start();
@@ -158,6 +160,7 @@ public class Main {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                System.out.println("Bye from Thread 10");
             }
         });
         insert10.start();
@@ -170,6 +173,7 @@ public class Main {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                System.out.println("Bye from Thread 11");
             }
         });
         insert11.start();
@@ -186,11 +190,12 @@ public class Main {
         insert10.join();
         insert11.join();
 
-
-
         System.out.println("In order printing of a tree with no removes in it: ");
         System.out.println("Size: " + bstMulti.size());
         bstMulti.inorder();
+
+        Thread.sleep(1000);
+        System.out.println("Mooo!");
 //        System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
 
 //        Thread remove1 = new Thread(new Runnable() {
@@ -242,8 +247,8 @@ public class Main {
 //        remove4.start();
 
 
-        System.out.println("\n");
-        System.out.println("In order printing of a tree with removes in it: ");
+//        System.out.println("\n");
+//        System.out.println("In order printing of a tree with removes in it: ");
         //System.out.println("Size: " + bstMulti.size());
 //        bstMulti.inorder();
 //        System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
