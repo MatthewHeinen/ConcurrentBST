@@ -178,21 +178,22 @@ public class Main {
         });
         insert11.start();
 
-        insert1.join();
-        insert2.join();
-        insert3.join();
-        insert4.join();
-        insert5.join();
-        insert6.join();
-        insert7.join();
-        insert8.join();
+//        insert1.join();
+//        insert2.join();
+//        insert3.join();
+//        insert4.join();
+//        insert5.join();
+//        insert6.join();
+//        insert7.join();
+//        insert8.join();
         insert9.join();
         insert10.join();
-        insert11.join();
+//        insert11.join();
 
         System.out.println("In order printing of a tree with no removes in it: ");
         System.out.println("Size: " + bstMulti.size());
         bstMulti.inorder();
+        System.out.println("\n");
 
         Thread.sleep(1000);
         System.out.println("Mooo!");

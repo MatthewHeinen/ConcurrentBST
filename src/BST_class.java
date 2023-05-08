@@ -45,6 +45,7 @@ class BST_class extends Thread {
     private int checkerCounter = 0;
     private int matchCheckerCounter = 0;
     private boolean isInserting = false;
+    public int rootCount = 0;
     public int size() {
         return count.get(); //Returns the count (size) of the tree
     }
@@ -105,16 +106,15 @@ class BST_class extends Thread {
             insertCounter++;
             waitingInsert.wait();
         }
-        if (root == null) {
-            root = new Node(key);
-            count.incrementAndGet();
-            synchronized (waitingInsert) {
+        synchronized (this) {
+            if (root == null) {
+                root = new Node(key);
+                count.incrementAndGet();
                 matchCountInsert++;
+                return; //am i allowed to have empty returns
             }
-            return; //am i allowed to have empty returns
         }
         count.incrementAndGet();
-
         if (key > debug_keys_above) System.out.println("Debug: recursive inserting key from root " + key);
         insert_Recursive(root, key);
     }
@@ -128,6 +128,7 @@ class BST_class extends Thread {
             synchronized (waitingInsert) {
                 matchCountInsert++;
                 System.out.println("Shouldn't get here");
+                waitingInsert.wait();
             }
             return;
         }
@@ -138,43 +139,42 @@ class BST_class extends Thread {
         //traverse the tree
         if (key < curr.key) {
             if(curr.left == null){
-                Node newNode = new Node(key);
-                newNode.nodeSem.acquire();
-                curr.left = newNode;
+                Node newNodeLeft = new Node(key);
+                newNodeLeft.nodeSem.acquire();
+                curr.left = newNodeLeft;
                 curr.nodeSem.release();
                 curr.left.nodeSem.release();
                 synchronized (waitingInsert) {
                     matchCountInsert++;
+                    waitingInsert.wait();
                 }
-//                root.left = curr.left;
             } else {
                 curr.nodeSem.release();
                 if (key > debug_keys_above) System.out.println("Debug: recursive inserting, going left  after unlocking " + curr.key + " as I work on key " + key);
                 insert_Recursive(curr.left, key);
-
             }
         }
         else if (key > curr.key) {
             if(curr.right == null) {
-                Node newNode = new Node(key);
-                newNode.nodeSem.acquire();
-                curr.right = newNode;
+                Node newNodeRight = new Node(key);
+                newNodeRight.nodeSem.acquire();
+                curr.right = newNodeRight;
                 curr.nodeSem.release();
                 curr.right.nodeSem.release();
                 synchronized (waitingInsert) {
                     matchCountInsert++;
+                    waitingInsert.wait();
                 }
-//                root.right = curr.right;
             } else {
                 curr.nodeSem.release();
                 if (key > debug_keys_above) System.out.println("Debug: recursive inserting, going right after unlocking " + curr.key + " as I work on key " + key);
                 insert_Recursive(curr.right, key);
-
             }
         }
         else if (key == curr.key){
             curr.nodeSem.release();
         }
+
 //        curr.nodeSem.release();
         // return pointer
     }
