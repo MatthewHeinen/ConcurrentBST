@@ -101,7 +101,7 @@ class BST_class extends Thread {
     }
     // insert a node in BST
     void insert(int key) throws InterruptedException {
-        if (key > debug_keys_above) System.out.println("Debug: inserting key " + key);
+//        if (key > debug_keys_above) System.out.println("Debug: inserting key " + key);
         synchronized (waitingInsert) {
             insertCounter++;
             waitingInsert.wait();
@@ -115,7 +115,7 @@ class BST_class extends Thread {
             }
         }
         count.incrementAndGet();
-        if (key > debug_keys_above) System.out.println("Debug: recursive inserting key from root " + key);
+//        if (key > debug_keys_above) System.out.println("Debug: recursive inserting key from root " + key);
         insert_Recursive(root, key);
     }
 
@@ -135,7 +135,7 @@ class BST_class extends Thread {
 
         curr.nodeSem.acquire();
 
-        if (key > debug_keys_above) System.out.println("Debug: recursive inserting, locking " + curr.key + " as I work on key " + key);
+//        if (key > debug_keys_above) System.out.println("Debug: recursive inserting, locking " + curr.key + " as I work on key " + key);
         //traverse the tree
         if (key < curr.key) {
             if(curr.left == null){
@@ -150,7 +150,7 @@ class BST_class extends Thread {
                 }
             } else {
                 curr.nodeSem.release();
-                if (key > debug_keys_above) System.out.println("Debug: recursive inserting, going left  after unlocking " + curr.key + " as I work on key " + key);
+//                if (key > debug_keys_above) System.out.println("Debug: recursive inserting, going left  after unlocking " + curr.key + " as I work on key " + key);
                 insert_Recursive(curr.left, key);
             }
         }
@@ -167,7 +167,7 @@ class BST_class extends Thread {
                 }
             } else {
                 curr.nodeSem.release();
-                if (key > debug_keys_above) System.out.println("Debug: recursive inserting, going right after unlocking " + curr.key + " as I work on key " + key);
+//                if (key > debug_keys_above) System.out.println("Debug: recursive inserting, going right after unlocking " + curr.key + " as I work on key " + key);
                 insert_Recursive(curr.right, key);
             }
         }
@@ -215,21 +215,27 @@ class BST_class extends Thread {
     }
 
     public boolean invariantChecker() throws InterruptedException {
-        synchronized (waitingChecker){
-            checkerCounter++;
-            waitingChecker.wait();
-        }
+//        synchronized (waitingChecker){
+//            checkerCounter++;
+//            waitingChecker.wait();
+//        }
         return validate(root, null, null);
     }
 
     public boolean validate(Node root, Integer low, Integer high){
         if (root == null) {
+            synchronized (waitingChecker){
+                checkerCounter++;
+            }
             synchronized (waitingChecker) {
                 matchCheckerCounter++;
             }
             return true;
         }
         if((low != null && root.key <= low) || (high != null && root.key >= high)) {
+            synchronized (waitingChecker){
+                checkerCounter++;
+            }
             synchronized (waitingChecker) {
                 matchCheckerCounter++;
             }
