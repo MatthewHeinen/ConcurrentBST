@@ -65,7 +65,9 @@ class BST_class extends Thread {
     //recursive delete function
     private Node delete_Recursive(Node root, int key)  {
         //tree is empty
-        if (root == null)  return root;
+        if (root == null) {
+            return root;
+        }
 
         //traverse the tree
         if (key < root.key)     //traverse left subtree
