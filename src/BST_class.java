@@ -23,14 +23,14 @@ class BST_class extends Thread {
     }
     // BST root node
     Node root;
-    AtomicInteger count = new AtomicInteger(0);
+    int count = 0;
 
     //private final Semaphore insertSem;
 
     // Constructor for BST =>initial empty tree
     BST_class(){
         root = null;
-        count = new AtomicInteger(0);
+        count = 0;
         //insertSem = new Semaphore(1);
     }
 
@@ -47,7 +47,7 @@ class BST_class extends Thread {
     private boolean isInserting = false;
     public int rootCount = 0;
     public int size() {
-        return count.get(); //Returns the count (size) of the tree
+        return count; //Returns the count (size) of the tree
     }
 
     //delete a node from BST
@@ -56,7 +56,7 @@ class BST_class extends Thread {
             removeCounter++;
             waitingRemove.wait();
         }
-        count.decrementAndGet();
+        count--;
         root = delete_Recursive(root, key);
         matchCountRemove++;
 
@@ -111,12 +111,12 @@ class BST_class extends Thread {
         synchronized (this) {
             if (root == null) {
                 root = new Node(key);
-                count.incrementAndGet();
+                count++;
                 matchCountInsert++;
                 return; //am i allowed to have empty returns
             }
         }
-        count.incrementAndGet();
+        count++;
 //        if (key > debug_keys_above) System.out.println("Debug: recursive inserting key from root " + key);
         insert_Recursive(root, key);
     }
@@ -154,7 +154,16 @@ class BST_class extends Thread {
                 curr.nodeSem.release();
 //                if (key > debug_keys_above) System.out.println("Debug: recursive inserting, going left  after unlocking " + curr.key + " as I work on key " + key);
                 insert_Recursive(curr.left, key);
+                count--;
             }
+        }
+        if (key == curr.key){
+            curr.nodeSem.release();
+            synchronized (waitingInsert) {
+                matchCountInsert++;
+                waitingInsert.wait();
+            }
+
         }
         else if (key > curr.key) {
             if(curr.right == null) {
@@ -173,9 +182,7 @@ class BST_class extends Thread {
                 insert_Recursive(curr.right, key);
             }
         }
-        else if (key == curr.key){
-            curr.nodeSem.release();
-        }
+
 
 //        curr.nodeSem.release();
         // return pointer
@@ -197,8 +204,8 @@ class BST_class extends Thread {
     }
 
     boolean search(int key)  {
-        root = search_Recursive(root, key);
-        if (root!= null)
+
+        if (search_Recursive(root, key)!= null)
             return true;
         else
             return false;

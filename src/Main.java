@@ -16,18 +16,17 @@ public class Main {
 //        bstSequntialOne.insert(5);
 //        bstSequntialOne.insert(17);
 //        bstSequntialOne.insert(10);
+//        bstSequntialOne.insert(5);
 //        bstSequntialOne.insert(1);
 //        bstSequntialOne.insert(9);
 //        bstSequntialOne.insert(3);
 //        System.out.println("In order printing of a tree with no removes in it: ");
-//        System.out.println("Size: " + bstSequntialOne.size());
 //        bstSequntialOne.inorder();
 //        System.out.println("\n" + "This is a "+ bstSequntialOne.invariantChecker() + " BST");
 //        bstSequntialOne.deleteKey(3);
 //        bstSequntialOne.deleteKey(11);
 //        bstSequntialOne.deleteKey(1);
 //        System.out.println("\n");
-//        System.out.println("Size: " + bstSequntialOne.size());
 //        System.out.println("In order printing of a tree with a remove/removes in it: ");
 //        bstSequntialOne.inorder();
 //        System.out.println("\n" + "This is a "+ bstSequntialOne.invariantChecker() + " BST");
@@ -48,14 +47,12 @@ public class Main {
 //        bstSequentialTwo.insert(5);
 //        bstSequentialTwo.insert(10);
 //        System.out.println("In order printing of a tree with no removes in it: ");
-//        System.out.println("Size: " + bstSequentialTwo.size());
 //        bstSequentialTwo.inorder();
 //        System.out.println("\n" + "This is a "+ bstSequentialTwo.invariantChecker() + " BST");
 //        System.out.println("The element -1 when searched for in the empty tree is true: " + bstSequentialTwo.search(-1));
-//        bstSequentialTwo.deleteKey(-5);
 //        bstSequentialTwo.deleteKey(-1);
+//        bstSequentialTwo.deleteKey(10);
 //        System.out.println("\n");
-//        System.out.println("Size: " + bstSequentialTwo.size());
 //        System.out.println("In order printing of a tree with a remove/removes in it: ");
 //        bstSequentialTwo.inorder();
 //        System.out.println("\n" + "This is a "+ bstSequentialTwo.invariantChecker() + " BST");
@@ -219,7 +216,6 @@ public class Main {
 //        insert11.join();
 //
 //        System.out.println("In order printing of a tree with no removes in it: ");
-//        System.out.println("Size: " + bstMulti.size());
 //        bstMulti.inorder();
 //        System.out.println("\n");
 //        System.out.println("This is a "+ bstMulti.invariantChecker() + " BST");
@@ -282,121 +278,289 @@ public class Main {
 //
 //        System.out.println("\n");
 //        System.out.println("In order printing of a tree with removes in it: ");
-//        System.out.println("Size: " + bstMulti.size());
 //        bstMulti.inorder();
 //        System.out.println("\n" + "This is a "+ bstMulti.invariantChecker() + " BST");
-        System.out.println("********************************************************************");
-        System.out.println("Concurrent Test 2");
+//        System.out.println("********************************************************************");
+//        System.out.println("Concurrent Test 2");
+//
+//        BST_class bstMultiTwo = new BST_class(); //Example 1 test
+//        bstMultiTwo.timing();
+//        Thread ins1 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    bstMultiTwo.insert(5);
+//                    bstMultiTwo.insert(9);
+//                    bstMultiTwo.insert(15);
+//                    bstMultiTwo.insert(20);
+//                    bstMultiTwo.insert(1);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//        ins1.start();
+//
+//        Thread ins2 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    bstMultiTwo.insert(6);
+//                    bstMultiTwo.insert(10);
+//                    bstMultiTwo.insert(16);
+//                    bstMultiTwo.insert(21);
+//                    bstMultiTwo.insert(0);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//        ins2.start();
+//
+//        Thread ins3 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    bstMultiTwo.insert(35);
+//                    bstMultiTwo.insert(36);
+//                    bstMultiTwo.insert(37);
+//                    bstMultiTwo.insert(38);
+//                    bstMultiTwo.insert(39);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//        ins3.start();
+//
+//        ins1.join();
+//        ins2.join();
+//        ins3.join();
+//
+//        System.out.println("In order printing of a tree with no removes in it: ");
+//        bstMultiTwo.inorder();
+//        System.out.println("\n");
+//        System.out.println("The element 10 when searched for when it was just inserted in the tree is true: " + bstMultiTwo.search(10));
+//        System.out.println("This is a "+ bstMultiTwo.invariantChecker() + " BST");
+//
+//        Thread del1 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    bstMultiTwo.deleteKey(20);
+//                    bstMultiTwo.deleteKey(21);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//        del1.start();
+//
+//        Thread del2 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    //bstMultiTwo.invariantChecker();
+//                    bstMultiTwo.deleteKey(10);
+//                    bstMultiTwo.deleteKey(15);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//        del2.start();
+//
+//        Thread del3 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    bstMultiTwo.deleteKey(36);
+//                    bstMultiTwo.deleteKey(37);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//        del3.start();
+//
+//        del1.join();
+//        del2.join();
+//        del3.join();
+//
+//        System.out.println("\n");
+//        System.out.println("In order printing of a tree with removes in it: ");
+//        bstMultiTwo.inorder();
+//        System.out.println("\n" + "This is a "+ bstMultiTwo.invariantChecker() + " BST");
+//        System.out.println("The element 10 when searched for when it was just deleted in the tree is false: " + bstMultiTwo.search(10));
+        System.out.println("*******************************************************************");
+        System.out.println("Concurrent Test 3");
+        BST_class bstMultiThree = new BST_class();
+        bstMultiThree.timing();
 
-        BST_class bstMultiTwo = new BST_class(); //Example 1 test
-        bstMultiTwo.timing();
-        Thread ins1 = new Thread(new Runnable() {
+        Thread i1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    bstMultiTwo.insert(5);
-                    bstMultiTwo.insert(9);
-                    bstMultiTwo.insert(15);
-                    bstMultiTwo.insert(20);
-                    bstMultiTwo.insert(1);
+                    bstMultiThree.insert(0);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-        ins1.start();
+        i1.start();
 
-        Thread ins2 = new Thread(new Runnable() {
+        Thread i2 = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    bstMultiTwo.insert(6);
-                    bstMultiTwo.insert(10);
-                    bstMultiTwo.insert(16);
-                    bstMultiTwo.insert(21);
-                    bstMultiTwo.insert(0);
+                    bstMultiThree.insert(1);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-        ins2.start();
+        i2.start();
 
-        Thread ins3 = new Thread(new Runnable() {
+        Thread i3 = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    bstMultiTwo.insert(35);
-                    bstMultiTwo.insert(36);
-                    bstMultiTwo.insert(37);
-                    bstMultiTwo.insert(38);
-                    bstMultiTwo.insert(39);
+                    bstMultiThree.insert(10);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-        ins3.start();
-
-        ins1.join();
-        ins2.join();
-        ins3.join();
-
-        System.out.println("In order printing of a tree with no removes in it: ");
-        System.out.println("Size: " + bstMultiTwo.size());
-        bstMultiTwo.inorder();
-        System.out.println("\n");
-        System.out.println("The element 10 when searched for when it was just inserted in the tree is true: " + bstMultiTwo.search(10));
-        System.out.println("This is a "+ bstMultiTwo.invariantChecker() + " BST");
-
-        Thread del1 = new Thread(new Runnable() {
+        i3.start();
+        Thread i4 = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    bstMultiTwo.deleteKey(20);
-                    bstMultiTwo.deleteKey(21);
+                    bstMultiThree.insert(100);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-        del1.start();
-
-        Thread del2 = new Thread(new Runnable() {
+        i4.start();
+        Thread i5 = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    //bstMultiTwo.invariantChecker();
-                    bstMultiTwo.deleteKey(10);
-                    bstMultiTwo.deleteKey(15);
+                    bstMultiThree.insert(2);
+                    bstMultiThree.insert(6);
+                    bstMultiThree.insert(22);
+                    bstMultiThree.insert(-2);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-        del2.start();
+        i5.start();
 
-        Thread del3 = new Thread(new Runnable() {
+        Thread i6 = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    bstMultiTwo.deleteKey(36);
-                    bstMultiTwo.deleteKey(37);
+                    bstMultiThree.insert(6);
+
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-        del3.start();
+        i6.start();
 
-        del1.join();
-        del2.join();
-        del3.join();
+        Thread i7 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bstMultiThree.insert(22);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        i7.start();
 
-        System.out.println("\n");
+        Thread i8 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bstMultiThree.insert(-2);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        i8.start();
+
+        Thread i9 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bstMultiThree.insert(-5);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        i9.start();
+
+        Thread d1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bstMultiThree.deleteKey(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        d1.start();
+
+        Thread d2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bstMultiThree.deleteKey(10);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        d2.start();
+
+        Thread d3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bstMultiThree.deleteKey(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        d3.start();
+
+        i1.join();
+        i2.join();
+        i3.join();
+        i4.join();
+        Thread.sleep(1000);
+        i5.join();
+        i6.join();
+        i7.join();
+        i8.join();
+        i9.join();
+        Thread.sleep(1000);
+        d1.join();
+        d2.join();
+        d3.join();
+
         System.out.println("In order printing of a tree with removes in it: ");
-        System.out.println("Size: " + bstMultiTwo.size());
-        bstMultiTwo.inorder();
-        System.out.println("\n" + "This is a "+ bstMultiTwo.invariantChecker() + " BST");
+        bstMultiThree.inorder();
+        System.out.println("\n" + "This is a "+ bstMultiThree.invariantChecker() + " BST"); //is it ok that every remove is not happening as they may not be there to be removed.
     }
+
 }
